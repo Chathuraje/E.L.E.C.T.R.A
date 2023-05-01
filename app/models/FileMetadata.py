@@ -12,6 +12,7 @@ class DB_FileMetadata(Base):
     real_name = Column(String)
     file_size = Column(Integer)
     file_type = Column(String)
+    file_description = Column(String)
     tool_name = Column(String)
     # file_path = Column(String)
     created_at = Column(DateTime, server_default=func.now())

@@ -1,20 +1,5 @@
 # ::TODO:: Response only has one response, need to fix it
 
-# Tool: Scraping/Reddit
-tool_name = "storage/storage.py"
-description = "Store files in the server"
-
-# Output file format
-mime_type = "NA"
-output_file_format = "NA"
-system_folder_name = "NA"
-
-# Usefull Information
-use_db = True
-use_storage = True
-storage_name = "Main Storage"
-
-
 import os, random, string, time
 from sqlalchemy.orm import Session
 from app.libraries import database
@@ -30,7 +15,7 @@ LOCAL_STORAGE_LOCATION = config.LOCAL_STORAGE_LOCATION
 
 
 
-async def __save_in_database(filename, file_size, db, current_user, content_type, real_name, tool_name):
+async def save_in_database(filename, file_size, db, current_user, content_type, real_name, tool_name, file_description=None):
 
     file_metadata = DB_FileMetadata(
         id=filename,
@@ -39,6 +24,7 @@ async def __save_in_database(filename, file_size, db, current_user, content_type
         tool_name=tool_name,
         file_type=content_type,
         # file_path=os.path.join(location, str(current_user.id), file.filename),
+        file_description=file_description,
         owner_id=current_user.id,
         owner=current_user
     )
@@ -56,7 +42,7 @@ async def __random_name():
     return filename    
     
     
-async def __save_in_storage(file, db, current_user):
+async def save_in_storage(file, db, current_user):
     
     filename = await __random_name()
     extension = os.path.splitext(file.filename)[1]
@@ -71,11 +57,11 @@ async def __save_in_storage(file, db, current_user):
 
 
 
-async def upload_file(files, current_user, db: Session = Depends(get_db)):
+async def upload_file(files, current_user, db, tool_name):
     file_metadata_list = []
     for file in files:
-        filename, file_size = await __save_in_storage(file, db, current_user)
-        await __save_in_database(filename, file_size, db, current_user, file.content_type, file.filename, tool_name=tool_name)
+        filename, file_size = await save_in_storage(file, db, current_user)
+        await save_in_database(filename, file_size, db, current_user, file.content_type, file.filename, tool_name=tool_name)
         
         file_metadata_list.append(filename)
         
@@ -83,7 +69,7 @@ async def upload_file(files, current_user, db: Session = Depends(get_db)):
     
     
     
-async def display_file_list(current_user, db):
+async def display_file_list(current_user, db, tool_name):
     user_file_list = db.query(DB_FileMetadata).filter(
         (DB_FileMetadata.owner_id == current_user.id) &
         (DB_FileMetadata.tool_name == tool_name)
@@ -92,7 +78,7 @@ async def display_file_list(current_user, db):
     return user_file_list
 
 
-async def download_file(file_id: str, current_user, db: Session = Depends(get_db)):
+async def download_file(file_id: str, current_user, tool_name, db: Session = Depends(get_db)):
     file_metadata = db.query(DB_FileMetadata).filter(
         (DB_FileMetadata.owner_id == current_user.id) &
         (DB_FileMetadata.tool_name == tool_name)
@@ -112,7 +98,7 @@ async def download_file(file_id: str, current_user, db: Session = Depends(get_db
 
 
 
-async def delete_file(file_id: str, current_user, db: Session = Depends(get_db)):
+async def delete_file(file_id: str, current_user, tool_name, db: Session = Depends(get_db)):
     file_metadata = db.query(DB_FileMetadata).filter(
         (DB_FileMetadata.owner_id == current_user.id) &
         (DB_FileMetadata.tool_name == tool_name)

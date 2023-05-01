@@ -12,6 +12,8 @@ class BaseFileMetadata(BaseModel):
     real_name: str
     file_size: int
     file_type: str
+    file_description: Optional[str]
+    tool_name: str
     # file_path: str
     created_at: Optional[datetime] = datetime.now(tz=pytz.timezone(config.APP_TIMEZONE))
 

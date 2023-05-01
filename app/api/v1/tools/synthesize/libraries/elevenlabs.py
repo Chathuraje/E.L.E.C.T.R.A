@@ -21,7 +21,7 @@ from ..schemas import Audio
 import requests
 from app.api.base.libraries.users import get_user_storage_path
 from fastapi import HTTPException
-from ...storage.libraries.storage import __save_in_database, __random_name
+from app.api.base.libraries.storage import save_in_database, __random_name
 
 
 async def __synthesize(text: str, filePath: str):
@@ -59,9 +59,10 @@ async def generate_audio(audio: Audio, current_user, db):
     
     await __synthesize(audio.text, filePath)
     
+    file_description = f"Generated Audio - {audio.text}"
     with open(filePath, 'rb') as f:
         audio_file = f.read()
-        await __save_in_database(filename, len(audio_file), db, current_user, mime_type, filename, tool_name=tool_name)
+        await save_in_database(filename, len(audio_file), db, current_user, mime_type, filename, tool_name=tool_name, file_description=file_description)
         
     return StreamingResponse(io.BytesIO(audio_file), media_type=mime_type)
     
