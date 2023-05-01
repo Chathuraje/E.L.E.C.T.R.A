@@ -1,0 +1,41 @@
+{
+    "APP_NAME": "E.L.E.C.T.R.A",
+    "APP_VERSION": "0.4",
+    "CONTACT_DETAILS": {
+        "EMAIL": "",
+        "PHONE": "",
+        "ADDRESS": "",
+        "WEBSITE": ""
+    },
+    "SUPER_ADMIN": {
+        "EMAIL": "admin@example.com",
+        "PASSWORD": "admin",
+        "FIRST_NAME": "Admin",
+        "LAST_NAME": "Admin"
+    },
+    "APP_TIMEZONE": "Asia/Colombo",
+    "ADMIN_USER_CONTACT_DETAILS": {
+        "EMAIL": "",
+        "PHONE": "",
+        "ADDRESS": "",
+        "WEBSITE": ""
+    },
+    "REDDIT":{
+            "REDDIT_USER_AGENT": "python:personal.bot.assistabt:v0.0.1 (by /u/Healthy_Whereas3035)"
+    },
+    "WOLFRAM":{
+            "WOLFRAM_APP_ID": "QWJYJY-3XJWJYJYJY"
+    },
+    "JWT": {
+        "JWT_ALGORITHM": "HS256",
+        "JWT_ACCESS_TOKEN_EXPIRE_MINUTES": 30
+    },
+    "ELEVEN_LABS": {
+        "VOICE_ID": "TxGEqnHWrfWFTfGW9XjX"
+    },
+    "DEBUG_MODE": false,
+    "LOGGING": {
+        "LEVEL": "",
+        "FILE": ""
+    }
+}
