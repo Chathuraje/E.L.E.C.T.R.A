@@ -1,5 +1,19 @@
 # ::TODO:: Response only has one response, need to fix it
 
+# Tool: Scraping/Reddit
+tool_name = "storage/storage.py"
+description = "Store files in the server"
+
+# Output file format
+mime_type = "NA"
+output_file_format = "NA"
+system_folder_name = "NA"
+
+# Usefull Information
+use_db = True
+use_storage = True
+storage_name = "Main Storage"
+
 
 import os, random, string, time
 from sqlalchemy.orm import Session
@@ -9,19 +23,21 @@ from fastapi import Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from ..schemas import FileMetadata
 from fastapi.responses import StreamingResponse
+from app.libraries import config
 
 get_db = database.get_db
-location = "app/storage/"
+LOCAL_STORAGE_LOCATION = config.LOCAL_STORAGE_LOCATION
 
 
 
-async def __save_in_database(file, filename, file_size, db, current_user):
+async def __save_in_database(filename, file_size, db, current_user, content_type, real_name, tool_name):
 
     file_metadata = DB_FileMetadata(
         id=filename,
-        real_name=file.filename,
+        real_name=real_name,
         file_size=file_size,
-        file_type=file.content_type,
+        tool_name=tool_name,
+        file_type=content_type,
         # file_path=os.path.join(location, str(current_user.id), file.filename),
         owner_id=current_user.id,
         owner=current_user
@@ -31,15 +47,20 @@ async def __save_in_database(file, filename, file_size, db, current_user):
     db.refresh(file_metadata)
     
     return filename
-    
-    
-    
-async def __save_in_storage(file, db, current_user):
+
+
+async def __random_name():
     random_number = random.randint(1000, 9999)
     filename = str(round(time.time() * 1000)) + str(random_number)
     
+    return filename    
+    
+    
+async def __save_in_storage(file, db, current_user):
+    
+    filename = await __random_name()
     extension = os.path.splitext(file.filename)[1]
-    file_path = os.path.join(location, str(current_user.id), str(f"{filename}"))
+    file_path = os.path.join(LOCAL_STORAGE_LOCATION, str(current_user.id), str(f"{filename}"))
     
     with open(f"{file_path}{extension}", "wb") as f:
         while contents := file.file.read(1024 * 1024):
@@ -54,7 +75,7 @@ async def upload_file(files, current_user, db: Session = Depends(get_db)):
     file_metadata_list = []
     for file in files:
         filename, file_size = await __save_in_storage(file, db, current_user)
-        await __save_in_database(file, filename, file_size, db, current_user)
+        await __save_in_database(filename, file_size, db, current_user, file.content_type, file.filename, tool_name=tool_name)
         
         file_metadata_list.append(filename)
         
@@ -63,13 +84,19 @@ async def upload_file(files, current_user, db: Session = Depends(get_db)):
     
     
 async def display_file_list(current_user, db):
-    user_file_list = db.query(DB_FileMetadata).filter(DB_FileMetadata.owner_id == current_user.id).all()
+    user_file_list = db.query(DB_FileMetadata).filter(
+        (DB_FileMetadata.owner_id == current_user.id) &
+        (DB_FileMetadata.tool_name == tool_name)
+    ).all()
     
     return user_file_list
 
 
 async def download_file(file_id: str, current_user, db: Session = Depends(get_db)):
-    file_metadata = db.query(DB_FileMetadata).filter(DB_FileMetadata.id == file_id).first()
+    file_metadata = db.query(DB_FileMetadata).filter(
+        (DB_FileMetadata.owner_id == current_user.id) &
+        (DB_FileMetadata.tool_name == tool_name)
+    ).first()
 
     if not file_metadata:
         raise HTTPException(status_code=404, detail="File not found")
@@ -77,7 +104,7 @@ async def download_file(file_id: str, current_user, db: Session = Depends(get_db
     if file_metadata.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="User does not have permission to download file")
 
-    file_path = os.path.join(location, str(current_user.id), str(file_metadata.id) + os.path.splitext(file_metadata.real_name)[1])
+    file_path = os.path.join(LOCAL_STORAGE_LOCATION, str(current_user.id), str(file_metadata.id) + os.path.splitext(file_metadata.real_name)[1])
 
     file_stream = open(file_path, mode="rb")
 
@@ -86,7 +113,10 @@ async def download_file(file_id: str, current_user, db: Session = Depends(get_db
 
 
 async def delete_file(file_id: str, current_user, db: Session = Depends(get_db)):
-    file_metadata = db.query(DB_FileMetadata).filter(DB_FileMetadata.id == file_id).first()
+    file_metadata = db.query(DB_FileMetadata).filter(
+        (DB_FileMetadata.owner_id == current_user.id) &
+        (DB_FileMetadata.tool_name == tool_name)
+    ).first()
 
     if not file_metadata:
         raise HTTPException(status_code=404, detail="File not found")
@@ -95,7 +125,7 @@ async def delete_file(file_id: str, current_user, db: Session = Depends(get_db))
         raise HTTPException(status_code=403, detail="User does not have permission to delete file")
     
     try:
-        file_path = os.path.join(location, str(current_user.id), str(file_metadata.id) + os.path.splitext(file_metadata.real_name)[1])
+        file_path = os.path.join(LOCAL_STORAGE_LOCATION, str(current_user.id), str(file_metadata.id) + os.path.splitext(file_metadata.real_name)[1])
         os.remove(file_path)
     except OSError as e:
         raise HTTPException(status_code=500, detail="File could not be deleted")

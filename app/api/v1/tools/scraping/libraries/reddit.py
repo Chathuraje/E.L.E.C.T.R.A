@@ -1,6 +1,21 @@
 # ::TODO:: Need to handel the exception and return the error message to the user
 # ::TODO:: Need to add the way to do profanity check another way to do it
 
+
+# Tool: Scraping/Reddit
+tool_name = "scraping/reddit"
+description = "Scrape text-based reddit posts and comments"
+
+# Output file format
+mime_type = "NA"
+output_file_format = "NA"
+system_folder_name = "NA"
+
+# Usefull Information
+use_db = False
+use_storage = False
+
+
 from fastapi import HTTPException, status
 from app.libraries import secrets, config
 import praw, prawcore

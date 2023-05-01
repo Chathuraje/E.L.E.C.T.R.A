@@ -7,6 +7,9 @@ from ..schemas import UserCreate, ShowUser, UpdateUser
 from datetime import datetime
 import os
 import uuid
+from app.libraries import config
+LOCAL_STORAGE_LOCATION = config.LOCAL_STORAGE_LOCATION
+
 
 get_db = database.get_db
 
@@ -18,13 +21,30 @@ def __get_user(email, db: Session = Depends(get_db)):
 
 
 def __create_user_folder(user_id):
-    user_dir = os.path.join("app/storage", str(user_id))
+    user_dir = os.path.join(LOCAL_STORAGE_LOCATION, str(user_id))
     if not os.path.exists(user_dir):
         os.makedirs(user_dir)
         
-    secret_dir = os.path.join(user_dir, "secrets")
-    if not os.path.exists(secret_dir):
-        os.makedirs(secret_dir)
+    sys_dir = os.path.join(user_dir, ".sys")
+    if not os.path.exists(sys_dir):
+        os.makedirs(sys_dir)
+        
+    screenshots_dir = os.path.join(sys_dir, "screenshots")
+    if not os.path.exists(screenshots_dir):
+        os.makedirs(screenshots_dir)
+        
+    audios_dir = os.path.join(sys_dir, "audios")
+    if not os.path.exists(audios_dir):
+        os.makedirs(audios_dir)
+        
+    secrets_dir = os.path.join(sys_dir, "secrets")
+    if not os.path.exists(secrets_dir):
+        os.makedirs(secrets_dir)
+        
+    videos_dir = os.path.join(sys_dir, "videos")
+    if not os.path.exists(videos_dir):
+        os.makedirs(videos_dir)
+        
         
         
 
@@ -128,3 +148,11 @@ def delete_user(email, db):
     db.commit()
     
     return "User deleted successfully"
+
+
+
+async def get_user_storage_path(current_user, system=False):
+    if system:
+        return os.path.join(LOCAL_STORAGE_LOCATION, str(current_user.id), ".sys")
+    
+    return os.path.join(LOCAL_STORAGE_LOCATION, str(current_user.id))

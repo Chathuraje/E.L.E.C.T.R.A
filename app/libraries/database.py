@@ -6,6 +6,9 @@ from app.models.Users import DB_User
 from app.libraries import config
 from app.api.base.libraries.hashing import Hash
 import os
+from app.libraries import config
+
+LOCAL_STORAGE_LOCATION = config.LOCAL_STORAGE_LOCATION
 
 #SQLALCHEMY_DATABASE_URL = "sqlite:///./app/electra.db"
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:root@localhost:5432/electra"
@@ -42,11 +45,28 @@ def __create_superadmin_account():
         session.add(superadmin)
         session.commit()
         session.refresh(superadmin)
-            
-        user_dir = os.path.join("app/storage", str(superadmin.id))
+        
+        user_dir = os.path.join(LOCAL_STORAGE_LOCATION, str(superadmin.id))
         if not os.path.exists(user_dir):
             os.makedirs(user_dir)
         
-        secret_dir = os.path.join(user_dir, "secrets")
-        if not os.path.exists(secret_dir):
-            os.makedirs(secret_dir)
+        sys_dir = os.path.join(user_dir, ".sys")
+        if not os.path.exists(sys_dir):
+            os.makedirs(sys_dir)
+            
+        screenshots_dir = os.path.join(sys_dir, "screenshots")
+        if not os.path.exists(screenshots_dir):
+            os.makedirs(screenshots_dir)
+            
+        audios_dir = os.path.join(sys_dir, "audios")
+        if not os.path.exists(audios_dir):
+            os.makedirs(audios_dir)
+            
+        secrets_dir = os.path.join(sys_dir, "secrets")
+        if not os.path.exists(secrets_dir):
+            os.makedirs(secrets_dir)
+            
+        videos_dir = os.path.join(sys_dir, "videos")
+        if not os.path.exists(videos_dir):
+            os.makedirs(videos_dir)
+            

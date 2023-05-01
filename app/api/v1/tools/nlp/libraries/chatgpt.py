@@ -1,3 +1,16 @@
+# Tool: ChatGPT
+tool_name = "nlp/chatgpt.py"
+description = "Chat with ChatGPT AI"
+
+# Output file format
+mime_type = "NA"
+output_file_format = "NA"
+system_folder_name = "NA"
+
+# Usefull Information
+use_db = False
+use_storage = False
+
 import openai, time
 from app.libraries import secrets
 from fastapi import HTTPException, status
