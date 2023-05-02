@@ -1,5 +1,6 @@
 # Tool: Synthesize
-tool_name = "synthesize/elevenlabs.py"
+main_tool_name = "synthesize"
+sub_tool_name = "elevenlabs"
 description = "Synthesize audio using ElevenLabs API"
 
 # Output file format
@@ -59,10 +60,11 @@ async def generate_audio(audio: Audio, current_user, db):
     
     await __synthesize(audio.text, filePath)
     
-    file_description = f"Generated Audio - {audio.text}"
+    file_description = f"({sub_tool_name}) - {audio.text}"
     with open(filePath, 'rb') as f:
         audio_file = f.read()
-        await save_in_database(filename, len(audio_file), db, current_user, mime_type, filename, tool_name=tool_name, file_description=file_description)
+        real_name = f"{filename}{output_file_format}"
+        await save_in_database(filename, len(audio_file), db, current_user, mime_type, real_name, tool_name=main_tool_name, file_path=filePath, file_description=file_description)
         
     return StreamingResponse(io.BytesIO(audio_file), media_type=mime_type)
     

@@ -14,7 +14,7 @@ class DB_FileMetadata(Base):
     file_type = Column(String)
     file_description = Column(String)
     tool_name = Column(String)
-    # file_path = Column(String)
+    file_path = Column(String)
     created_at = Column(DateTime, server_default=func.now())
     owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     owner = relationship("DB_User", backref="files")

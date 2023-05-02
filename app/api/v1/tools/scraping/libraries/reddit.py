@@ -3,7 +3,8 @@
 
 
 # Tool: Scraping/Reddit
-tool_name = "scraping/reddit"
+main_tool_name = "scraping"
+sub_tool_name = "reddit"
 description = "Scrape text-based reddit posts and comments"
 
 # Output file format

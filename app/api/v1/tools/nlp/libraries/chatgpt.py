@@ -1,5 +1,6 @@
 # Tool: ChatGPT
-tool_name = "nlp/chatgpt.py"
+main_tool_name = "nlp"
+sub_tool_name = "ChatGPT"
 description = "Chat with ChatGPT AI"
 
 # Output file format
