@@ -11,7 +11,6 @@ from ..schemas import FileMetadata
 
 get_db = database.get_db
 verify_role = auth.verify_role(accepted_roles=[Roles.user])
-# tool_name="storage"
 
 router = APIRouter(
     prefix="/storage",

@@ -1,0 +1,13 @@
+{
+    "main_tool": "nlp",
+    "ChatGPT": {
+        "sub_tool_name": "ChatGPT",
+        "description": "Chat with ChatGPT AI",
+        "python_file_name": "chatgpt.py",
+        "mime_type": "NA",
+        "output_file_format": "NA",
+        "system_folder_name": "NA",
+        "use_db": false,
+        "use_storage": false
+    }
+}

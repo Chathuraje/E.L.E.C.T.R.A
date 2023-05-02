@@ -1,19 +1,7 @@
-# Tool: Synthesize
-main_tool_name = "synthesize"
-sub_tool_name = "elevenlabs"
-description = "Synthesize audio using ElevenLabs API"
-
-# Output file format
-mime_type = "audio/mpeg"
-output_file_format = ".mp3"
-
-# Usefull Information
-use_db = True
-use_storage = True
-storage = "audios"
-
-
 # ::TODO:: Does not read inside the Documentation of the FastAPI if i use Post request.  Need to fix this.
+
+from . import load_tools
+main_tool_name, tool_data = load_tools("ElevenLabs")
 
 from app.libraries import secrets, config
 from fastapi.responses import StreamingResponse
@@ -55,16 +43,29 @@ async def __synthesize(text: str, filePath: str):
 async def generate_audio(audio: Audio, current_user, db):
     filename = await __random_name()
     
+    system_folder = tool_data['system_folder_name']
+    output_file_format = tool_data['output_file_format']
+    
     user_path = await get_user_storage_path(current_user, system=True)
-    filePath = f"{user_path}/{storage}/{filename}{output_file_format}"
+    filePath = f"{user_path}/{system_folder}/{filename}{output_file_format}"
     
     await __synthesize(audio.text, filePath)
     
-    file_description = f"({sub_tool_name}) - {audio.text}"
+    file_description = f"({tool_data['sub_tool_name']}) - {audio.text}"
     with open(filePath, 'rb') as f:
         audio_file = f.read()
-        real_name = f"{filename}{output_file_format}"
-        await save_in_database(filename, len(audio_file), db, current_user, mime_type, real_name, tool_name=main_tool_name, file_path=filePath, file_description=file_description)
+        real_name = f"{filename}{tool_data['output_file_format']}"
+        await save_in_database(
+            filename, 
+            len(audio_file), 
+            db, 
+            current_user, 
+            tool_data['mime_type'], 
+            real_name, 
+            tool_name=main_tool_name, 
+            file_path=filePath, 
+            file_description=file_description
+        )
         
-    return StreamingResponse(io.BytesIO(audio_file), media_type=mime_type)
+    return StreamingResponse(io.BytesIO(audio_file), media_type=tool_data['mime_type'])
     

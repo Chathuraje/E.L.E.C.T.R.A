@@ -1,18 +1,3 @@
-
-# Tool: Synthesize
-main_tool_name = "synthesize"
-sub_tool_name = "elevenlabs"
-description = "Synthesize audio using ElevenLabs API"
-
-# Output file format
-mime_type = "audio/mpeg"
-output_file_format = ".mp3"
-
-# Usefull Information
-use_db = True
-use_storage = True
-storage = "audios"
-
 from fastapi import APIRouter, Response, Depends
 from ..libraries import elevenlabs
 from ..schemas import Audio

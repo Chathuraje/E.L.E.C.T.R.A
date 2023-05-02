@@ -1,0 +1,13 @@
+{
+    "main_tool": "scraping",
+    "Reddit": {
+        "sub_tool_name": "Reddit",
+        "description": "Scrape Text Based Reddit for posts and comments",
+        "python_file_name": "reddit.py",
+        "mime_type": "NA",
+        "output_file_format": "NA",
+        "system_folder_name": "NA",
+        "use_db": false,
+        "use_storage": false
+    }
+}

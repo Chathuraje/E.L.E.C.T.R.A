@@ -1,0 +1,13 @@
+{
+    "main_tool": "synthesize",
+    "ElevenLabs": {
+        "sub_tool_name": "ElevenLabs",
+        "description": "Synthesize audio using ElevenLabs API",
+        "python_file_name": "elevenlabs.py",
+        "mime_type": "audio/mpeg",
+        "output_file_format": ".mp3",
+        "system_folder_name": "audios",
+        "use_db": true,
+        "use_storage": true
+    }
+}

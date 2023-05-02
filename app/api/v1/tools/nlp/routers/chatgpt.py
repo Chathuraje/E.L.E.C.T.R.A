@@ -1,16 +1,5 @@
-# Tool: ChatGPT
-main_tool_name = "nlp"
+main_tool = "nlp"
 sub_tool_name = "ChatGPT"
-description = "Chat with ChatGPT AI"
-
-# Output file format
-mime_type = "NA"
-output_file_format = "NA"
-system_folder_name = "NA"
-
-# Usefull Information
-use_db = False
-use_storage = False
 
 from fastapi import APIRouter
 from ..libraries import chatgpt

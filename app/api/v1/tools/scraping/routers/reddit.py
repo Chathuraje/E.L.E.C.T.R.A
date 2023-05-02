@@ -1,17 +1,3 @@
-# Tool: Scraping/Reddit
-main_tool_name = "scraping"
-sub_tool_name = "reddit"
-description = "Scrape text-based reddit posts and comments"
-
-# Output file format
-mime_type = "NA"
-output_file_format = "NA"
-system_folder_name = "NA"
-
-# Usefull Information
-use_db = False
-use_storage = False
-
 from fastapi import APIRouter
 from ..libraries import reddit
 from ..schemas import CollectTimeFilter, CollectCaregory
