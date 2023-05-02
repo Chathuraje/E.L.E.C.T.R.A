@@ -9,7 +9,7 @@ from ..libraries import auth
 from ..schemas import Roles
 
 get_db = database.get_db
-verify_role = auth.verify_role(accepted_roles=[Roles.admin])
+verify_role = auth.verify_role(accepted_roles=[Roles.superadmin])
 
 router = APIRouter(
     prefix="/users",

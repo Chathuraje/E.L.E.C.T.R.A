@@ -7,6 +7,7 @@ from app.models.Users import DB_User
 from ..libraries import oauth2
 from ..schemas import User, Roles
 from typing import List
+from . import users
 
 get_db = database.get_db
 
@@ -19,6 +20,7 @@ def login(request, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                             detail=f"Incorrect email or password")
     
+    users.__create_user_folder(login_user.id)
     access_token = token.create_access_token(
         data={"sub": login_user.email}
     )

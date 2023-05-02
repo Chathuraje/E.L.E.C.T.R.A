@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from .hashing import Hash
 from app.libraries import database
 from app.models.Users import DB_User
-from ..schemas import UserCreate, ShowUser, UpdateUser
+from ..schemas import UserCreate, ShowUser, UpdateUser, Roles
 from datetime import datetime
 import os
 import uuid
@@ -28,24 +28,6 @@ def __create_user_folder(user_id):
     sys_dir = os.path.join(user_dir, ".sys")
     if not os.path.exists(sys_dir):
         os.makedirs(sys_dir)
-        
-    screenshots_dir = os.path.join(sys_dir, "screenshots")
-    if not os.path.exists(screenshots_dir):
-        os.makedirs(screenshots_dir)
-        
-    audios_dir = os.path.join(sys_dir, "audios")
-    if not os.path.exists(audios_dir):
-        os.makedirs(audios_dir)
-        
-    secrets_dir = os.path.join(sys_dir, "secrets")
-    if not os.path.exists(secrets_dir):
-        os.makedirs(secrets_dir)
-        
-    videos_dir = os.path.join(sys_dir, "videos")
-    if not os.path.exists(videos_dir):
-        os.makedirs(videos_dir)
-        
-        
         
 
 def create_user(request:UserCreate, db: Session = Depends(get_db)):
@@ -142,6 +124,12 @@ def delete_user(email, db):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User with email {email} not found",
+        )
+    
+    if user.roles == Roles.superadmin:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"User with email {email} is a superadmin and cannot be deleted",
         )
         
     db.delete(user)

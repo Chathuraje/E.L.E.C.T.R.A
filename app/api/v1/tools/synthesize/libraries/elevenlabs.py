@@ -3,14 +3,15 @@
 from . import load_tools
 main_tool_name, tool_data = load_tools("ElevenLabs")
 
+
 from app.libraries import secrets, config
 from fastapi.responses import StreamingResponse
-import io
+import io, os
 from ..schemas import Audio
 import requests
 from app.api.base.libraries.users import get_user_storage_path
 from fastapi import HTTPException
-from app.api.base.libraries.storage import save_in_database, __random_name
+from app.api.base.libraries.storage import save_in_database, __random_name, create_user_sub_folders
 
 
 async def __synthesize(text: str, filePath: str):
@@ -41,6 +42,8 @@ async def __synthesize(text: str, filePath: str):
                
                 
 async def generate_audio(audio: Audio, current_user, db):
+    create_user_sub_folders(current_user.id, tool_data['system_folder_name'])
+        
     filename = await __random_name()
     
     system_folder = tool_data['system_folder_name']

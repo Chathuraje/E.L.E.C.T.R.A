@@ -164,6 +164,3 @@ cython_debug/
 .trash/
 # Ignore all contents of app/storage/ folder
 app/storage/*
-
-# Except the folder itself
-!app/storage/
