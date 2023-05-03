@@ -107,7 +107,7 @@ def get_text_comments_data(post_id: str, limit: int, min_words: int, max_words: 
     except Exception as e:
         pass
     
-    submission.comments.replace_more(limit=10)
+    # submission.comments.replace_more(limit=10)
     
     profinity_data = pd.read_csv("app/static/datasets/profinity_check.csv")
     profinity_words = set(profinity_data["word"].str.lower())

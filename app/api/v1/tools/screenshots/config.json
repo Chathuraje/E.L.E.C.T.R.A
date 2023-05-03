@@ -1,0 +1,25 @@
+{
+    "main_tool": "screnshorts",
+    "screnshorts": {
+        "sub_tool_name": "screnshorts",
+        "description": "Take screnshorts of the given url",
+        "python_file_name": "screnshorts.py",
+        "mime_type": "image/png",
+        "output_file_format": ".png",
+        "system_folder_name": ["screenshots"],
+        "use_db": true,
+        "use_storage": true,
+        "use_temp_folder": false
+    },
+    "reddit_screnshorts": {
+        "sub_tool_name": "reddit_screnshorts",
+        "description": "Take text based reddit page and comments screnshorts of the given url",
+        "python_file_name": "reddit_screnshorts.py",
+        "mime_type": "application/zip",
+        "output_file_format": ".zip",
+        "system_folder_name": ["reddit_screnshorts"],
+        "use_db": true,
+        "use_storage": true,
+        "use_temp_folder": true
+    }
+}

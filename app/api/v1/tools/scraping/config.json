@@ -8,6 +8,7 @@
         "output_file_format": "NA",
         "system_folder_name": "NA",
         "use_db": false,
-        "use_storage": false
+        "use_storage": false,
+        "use_temp_folder": false
     }
 }

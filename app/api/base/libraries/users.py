@@ -21,6 +21,9 @@ def __get_user(email, db: Session = Depends(get_db)):
 
 
 def __create_user_folder(user_id):
+    if not os.path.exists(LOCAL_STORAGE_LOCATION):
+        os.makedirs(LOCAL_STORAGE_LOCATION)
+    
     user_dir = os.path.join(LOCAL_STORAGE_LOCATION, str(user_id))
     if not os.path.exists(user_dir):
         os.makedirs(user_dir)

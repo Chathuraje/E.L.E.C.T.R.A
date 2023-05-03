@@ -14,7 +14,7 @@ get_db = database.get_db
 LOCAL_STORAGE_LOCATION = config.LOCAL_STORAGE_LOCATION
 
 
-async def create_user_sub_folders(user_id, dir_name):
+async def create_user_sub_folders(user_id, dir_names):
     user_dir = os.path.join(LOCAL_STORAGE_LOCATION, str(user_id))
     if not os.path.exists(user_dir):
         os.makedirs(user_dir)
@@ -23,9 +23,14 @@ async def create_user_sub_folders(user_id, dir_name):
     if not os.path.exists(sys_dir):
         os.makedirs(sys_dir)
     
-    sub_dir = os.path.join(sys_dir, dir_name)
-    if not os.path.exists(sub_dir):
-        os.makedirs(sub_dir)
+    sub_dirs = []
+    for dir in dir_names:
+        sub_dir = os.path.join(sys_dir, dir)
+        sub_dirs.append(sub_dir)
+        if not os.path.exists(sub_dir):
+            os.makedirs(sub_dir)
+        
+    return sub_dirs
    
 
 async def save_in_database(filename, file_size, db, current_user, content_type, real_name, tool_name, file_path, file_description=None):

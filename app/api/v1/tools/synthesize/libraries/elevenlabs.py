@@ -42,15 +42,12 @@ async def __synthesize(text: str, filePath: str):
                
                 
 async def generate_audio(audio: Audio, current_user, db):
-    create_user_sub_folders(current_user.id, tool_data['system_folder_name'])
+    dir_name = await create_user_sub_folders(current_user.id, tool_data['system_folder_name'])
         
     filename = await __random_name()
-    
-    system_folder = tool_data['system_folder_name']
     output_file_format = tool_data['output_file_format']
     
-    user_path = await get_user_storage_path(current_user, system=True)
-    filePath = f"{user_path}/{system_folder}/{filename}{output_file_format}"
+    filePath = f"{dir_name[0]}/{filename}{output_file_format}"
     
     await __synthesize(audio.text, filePath)
     
