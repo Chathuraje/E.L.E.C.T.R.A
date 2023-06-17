@@ -51,10 +51,3 @@ async def __ask(prompt):
 async def ask(prompt):
     output = await __ask(prompt)
     return {'prompt': prompt, 'output': output}
-    
-    
-async def get_meta_data(meta: MetaData):
-    prompt = f"""Please Act As a {meta.platform} creator, You want to optimize your video's visibility by creating an SEO-friendly and eye-catching only {meta.limit} {meta.prompt_type}. Can you come up with a {meta.prompt_type} that's limited to {meta.min_length}-{meta.max_length} characters and accurately reflects what your video is about? Additionally, The key is to make the {meta.prompt_type} is to find for people who are searching for content related to your video. Your video is about {meta.video_name}. {meta.additional}"""
-    
-    output = await __ask(prompt)
-    return {'prompt': prompt, 'output': output}

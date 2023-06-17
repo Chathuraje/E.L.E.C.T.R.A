@@ -14,9 +14,3 @@ router = APIRouter(
 async def ask(prompt: str):
 
     return await chatgpt.ask(prompt)
-
-
-@router.post("/meta")
-async def get_meta_data(meta: MetaData):
-    
-    return await chatgpt.get_meta_data(meta)
