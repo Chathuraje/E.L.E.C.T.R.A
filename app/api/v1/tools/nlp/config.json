@@ -1,7 +1,7 @@
 {
     "main_tool": "nlp",
-    "ChatGPT": {
-        "sub_tool_name": "ChatGPT",
+    "chatgpt": {
+        "sub_tool_name": "chatgpt",
         "description": "Chat with ChatGPT AI",
         "python_file_name": "chatgpt.py",
         "mime_type": "NA",

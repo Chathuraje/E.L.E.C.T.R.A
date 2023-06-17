@@ -1,5 +1,5 @@
 from . import load_tools
-main_tool_name, tool_data = load_tools("ChatGPT")
+main_tool_name, tool_data = load_tools("chatgpt")
 
 import openai, time
 from app.libraries import secrets

@@ -1,7 +1,7 @@
 # ::TODO:: Does not read inside the Documentation of the FastAPI if i use Post request.  Need to fix this.
 
 from . import load_tools
-main_tool_name, tool_data = load_tools("ElevenLabs")
+main_tool_name, tool_data = load_tools("elevenlabs")
 
 
 from app.libraries import secrets, config

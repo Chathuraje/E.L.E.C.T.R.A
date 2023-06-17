@@ -1,7 +1,7 @@
 {
     "main_tool": "synthesize",
-    "ElevenLabs": {
-        "sub_tool_name": "ElevenLabs",
+    "elevenlabs": {
+        "sub_tool_name": "elevenlabs",
         "description": "Synthesize audio using ElevenLabs API",
         "python_file_name": "elevenlabs.py",
         "mime_type": "audio/mpeg",

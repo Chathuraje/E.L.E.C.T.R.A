@@ -3,7 +3,7 @@
 
 
 from . import load_tools
-main_tool_name, tool_data = load_tools("Reddit")
+main_tool_name, tool_data = load_tools("reddit")
 
 
 from fastapi import HTTPException, status
