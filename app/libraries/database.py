@@ -7,7 +7,7 @@ from . import super_admin
 LOCAL_STORAGE_LOCATION = config.LOCAL_STORAGE_LOCATION
 
 #SQLALCHEMY_DATABASE_URL = "sqlite:///./app/electra.db"
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:root@localhost:5432/electra"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:admin@localhost:5432/electra"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
