@@ -31,6 +31,7 @@ async def capture_site_view(url, current_user, db):
         current_user, 
         tool_data['mime_type'], 
         real_name, 
+        sub_tool_name=tool_data['sub_tool_name'],
         tool_name=main_tool_name, 
         file_path=filePath, 
         file_description=f"Screnshort of {url}"

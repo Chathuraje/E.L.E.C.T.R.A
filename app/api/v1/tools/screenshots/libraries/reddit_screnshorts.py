@@ -73,7 +73,8 @@ async def capture_reddit_text_based_post(screenshot: ScreenShotReddit, current_u
         db, 
         current_user, 
         tool_data['mime_type'], 
-        file_name, 
+        file_name,  
+        sub_tool_name=tool_data['sub_tool_name'],
         tool_name=main_tool_name, 
         file_path=zip_path, 
         file_description=f"Screnshort of reddit {screenshot.url} and the ids of comments are {screenshot.commentsid}"

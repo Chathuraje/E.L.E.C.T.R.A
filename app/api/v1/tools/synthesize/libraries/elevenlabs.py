@@ -51,7 +51,6 @@ async def generate_audio(audio: Audio, current_user, db):
     
     await __synthesize(audio.text, filePath)
     
-    file_description = f"({tool_data['sub_tool_name']}) - {audio.text}"
     with open(filePath, 'rb') as f:
         audio_file = f.read()
         real_name = f"{filename}{tool_data['output_file_format']}"
@@ -62,10 +61,11 @@ async def generate_audio(audio: Audio, current_user, db):
             current_user, 
             tool_data['mime_type'], 
             real_name, 
+            sub_tool_name=tool_data['sub_tool_name'],
             tool_name=main_tool_name, 
             file_path=filePath, 
-            file_description=file_description
+            file_description=audio.text
         )
         
-    return StreamingResponse(io.BytesIO(audio_file), media_type=tool_data['mime_type'])
+    return "Audio will Generate within few Minutes"
     

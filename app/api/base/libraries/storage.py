@@ -33,7 +33,7 @@ async def create_user_sub_folders(user_id, dir_names):
     return sub_dirs
    
 
-async def save_in_database(filename, file_size, db, current_user, content_type, real_name, tool_name, file_path, file_description=None):
+async def save_in_database(filename, file_size, db, current_user, content_type, real_name, tool_name, file_path, sub_tool_name, file_description=None):
 
     file_metadata = DB_FileMetadata(
         id=filename,
@@ -42,6 +42,7 @@ async def save_in_database(filename, file_size, db, current_user, content_type, 
         tool_name=tool_name,
         file_type=content_type,
         file_path=file_path,
+        sub_tool_name=sub_tool_name,
         file_description=file_description,
         owner_id=current_user.id,
         owner=current_user
